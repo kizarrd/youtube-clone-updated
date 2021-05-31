@@ -1,0 +1,25 @@
+{
+  "name": "youtube_clone_updated",
+  "version": "1.0.0",
+  "description": "youtube clone coding",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kizarrd/youtube-clone-updated.git"
+  },
+  "scripts": {
+    "win": "node index.js"
+  },
+  "author": "HAN Kihoon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kizarrd/youtube-clone-updated/issues"
+  },
+  "homepage": "https://github.com/kizarrd/youtube-clone-updated#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4"
+  }
+}
