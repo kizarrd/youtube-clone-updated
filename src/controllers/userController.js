@@ -131,11 +131,70 @@ export const finishGithubLogin = async (req, res) => {
 export const getEdit = (req, res) => {
     return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
-export const postEdit = (req, res) => {
-    return res.render("edit-profile");
+export const postEdit = async (req, res) => {
+    const { 
+        session: {
+            user: { _id },
+        },
+        body: {
+            name, email, username, location
+        },
+        file,
+    } = req;
+    console.log(file);
+    const updatedUser = await User.findByIdAndUpdate( 
+        _id, {
+        name, email, username, location,
+        },
+        { new: true }
+    );
+    req.session.user = updatedUser;
+    return res.redirect("/users/edit");
 };
 export const logout = (req, res) => {
     req.session.destroy();
     return res.redirect("/");
 };
+
+export const getChangePassword = (req, res) => {
+    if(req.session.user.socialOnly){
+        return res.redirect("/");
+    }
+    return res.render("users/change-password", { pageTitle: "Change Password" });
+}
+export const postChangePassword = async (req, res) => {
+    const {
+        session: {
+            user: { _id, password },
+        },
+        body: {
+            oldPassword,
+            newPassword,
+            newPasswordConfirmation
+        }
+    } = req;
+    const user = await User.findById(_id);
+    const ok = await bcrypt.compare(oldPassword, user.password);
+    if(!ok){
+        return res.status(400).render(
+            "users/change-password", { 
+                pageTitle:  "Change Password", 
+                errorMessage: "The old password does not match",
+            });
+    }
+
+    if(newPassword !== newPasswordConfirmation){
+        return res.status(400).render(
+            "users/change-password", { 
+                pageTitle:  "Change Password", 
+                errorMessage: "Unsuccessful password confirmation",
+            });
+    }
+
+    user.password = newPassword;
+    await user.save();
+    req.session.user.password = user.password;
+    return res.redirect("/users/logout");
+}
+
 export const see = (req, res) => res.send("See user");
