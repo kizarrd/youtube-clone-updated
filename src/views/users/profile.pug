@@ -1,0 +1,8 @@
+extends ../base 
+include ../mixins/video
+
+block content
+    each video in user.videos 
+        +video_format(video)
+    else 
+        li No video is found.
