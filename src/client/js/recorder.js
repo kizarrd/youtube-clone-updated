@@ -23,16 +23,19 @@ const downloadFile = (fileUrl, fileName) => {
 const init = async () => {
     stream = await navigator.mediaDevices.getUserMedia({
         audio: false,
-        video: true,
+        video: {
+            width: 1024,
+            height: 576,
+        },
     });
     video.srcObject = stream;
     video.play();
 };
 
 const handleActionBtnClick = () => {
-    actionBtn.innerText = "Stop Recording";
+    actionBtn.innerText = "Recording";
+    actionBtn.disabled = true;
     actionBtn.removeEventListener("click", handleActionBtnClick);
-    actionBtn.addEventListener("click", handleStopBtnClick);
     recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
     recorder.ondataavailable = (event) => {
         videoFile = URL.createObjectURL(event.data);
@@ -41,16 +44,22 @@ const handleActionBtnClick = () => {
         video.src = videoFile;
         video.loop = true;
         video.play();
+        actionBtn.innerText = "Download";
+        actionBtn.disabled = false;
+        actionBtn.addEventListener("click", handleDownload);
     };
     recorder.start();
+    setTimeout(()=>{
+        recorder.stop();
+    }, 5000);
 };
 
-const handleStopBtnClick = () => {
-    actionBtn.innerText = "Download Recording";
-    actionBtn.removeEventListener("click", handleStopBtnClick);
-    actionBtn.addEventListener("click", handleDownload);
-    recorder.stop();
-};
+// const handleStopBtnClick = () => {
+//     actionBtn.innerText = "Download Recording";
+//     actionBtn.removeEventListener("click", handleStopBtnClick);
+//     actionBtn.addEventListener("click", handleDownload);
+//     recorder.stop();
+// };
 
 const handleDownload = async () => {
 
@@ -71,7 +80,7 @@ const handleDownload = async () => {
     await ffmpeg.run("-i", files.input, "-ss", "00:00:01", "-frames:v", "1", files.thumb);
 
     const mp4File =  ffmpeg.FS("readFile", files.output );
-    const thumbFile =  ffmpeg.FS("readFile", files.thumb );
+    const thumbFile =  ffmpeg.FS("readFile", files.thumb);
 
     const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
     const thumbBlob = new Blob([thumbFile.buffer], { type: "image/jpg" });

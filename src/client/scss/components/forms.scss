@@ -35,4 +35,12 @@ form {
     text-align: center !important;
     cursor: pointer !important;
     display: block !important;
+    border: none;
+    &:focus {
+      outline: none;
+    }
+    &:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
   }
