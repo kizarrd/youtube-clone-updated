@@ -88,6 +88,8 @@ const handleFullScreenClick = () => {
 const removeShowingClass = () => videoControls.classList.remove("showing");
 
 const handleMouseMove = () => {
+    totalTime.innerText = formatTime(Math.floor(video.duration));
+    timeline.max = Math.floor(video.duration);
     if(controlsTimeout){
         clearTimeout(controlsTimeout);
         controlsTimeout = null;
