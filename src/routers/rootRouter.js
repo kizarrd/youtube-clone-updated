@@ -1,5 +1,5 @@
 import express from "express";
-import { publicOnlyMiddleware } from "../../middlewares";
+import { publicOnlyMiddleware } from "../middlewares";
 import { getJoin, postJoin, getLogin, postLogin } from "../controllers/userController";
 import { search, home } from "../controllers/videoController";
 

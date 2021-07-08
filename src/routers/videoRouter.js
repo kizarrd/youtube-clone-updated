@@ -1,5 +1,5 @@
 import express from "express";
-import { protectorMiddleware, uploadFiles, videoUpload } from "../../middlewares";
+import { protectorMiddleware, uploadFiles, videoUpload } from "../middlewares";
 import { getEdit, postEdit, getUpload, watch, postUpload, deleteVideo } from "../controllers/videoController";
 
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { avatarUpload, protectorMiddleware, publicOnlyMiddleware } from "../../middlewares";
+import { avatarUpload, protectorMiddleware, publicOnlyMiddleware } from "../middlewares";
 import { getEdit, see, logout, startGithubLogin, finishGithubLogin, postEdit, getChangePassword, postChangePassword } from "../controllers/userController";
 
 const userRouter = express.Router();
