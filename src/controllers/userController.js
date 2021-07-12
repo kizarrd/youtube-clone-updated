@@ -3,7 +3,7 @@ import Video from "../models/Video";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
-export const getJoin = (req, res) => res.render("Join", { pageTitle: "Join" });
+export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
     const { name, username, email, password1, password2, location } = req.body;
     const exists = await User.exists({ $or: [ { username }, { email }] });
